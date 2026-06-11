@@ -28,10 +28,23 @@ function NewIssuePage() {
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
   });
-
   const router = useRouter();
+
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
+
+  const OnSubmit = handleSubmit(async (data) => {
+    try {
+      setLoading(true);
+      await apiClient.post("/issues", data);
+      router.push("/issues");
+    } catch (error: any) {
+      setError(error.response.data.message[0]);
+    } finally {
+      setLoading(false);
+    }
+  });
+
   return (
     <div className="space-y-3 max-w-xl">
       {error && (
@@ -39,20 +52,7 @@ function NewIssuePage() {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setLoading(true);
-            await apiClient.post("/issues", data);
-            router.push("/issues");
-          } catch (error: any) {
-            setError(error.response.data.message[0]);
-          } finally {
-            setLoading(false);
-          }
-        })}
-        className=" space-y-3"
-      >
+      <form onSubmit={OnSubmit} className=" space-y-3">
         <TextField.Root placeholder="Title" {...register("title")}>
           <TextField.Slot />
         </TextField.Root>
