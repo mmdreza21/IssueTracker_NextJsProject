@@ -15,6 +15,7 @@ import apiClient from "@/lib/apiClient";
 import { createIssueSchema } from "@/lib/validationSchemas";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -30,6 +31,7 @@ function NewIssuePage() {
 
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
   return (
     <div className="space-y-3 max-w-xl">
       {error && (
@@ -40,10 +42,13 @@ function NewIssuePage() {
       <form
         onSubmit={handleSubmit(async (data) => {
           try {
+            setLoading(true);
             await apiClient.post("/issues", data);
             router.push("/issues");
           } catch (error: any) {
             setError(error.response.data.message[0]);
+          } finally {
+            setLoading(false);
           }
         })}
         className=" space-y-3"
@@ -62,7 +67,9 @@ function NewIssuePage() {
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button>Submit New Issue</Button>
+        <Button disabled={isLoading}>
+          Submit New Issue{isLoading && <Spinner />}
+        </Button>
       </form>
     </div>
   );
