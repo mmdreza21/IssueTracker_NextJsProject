@@ -1,4 +1,4 @@
-import { Status } from "@/types/IssuesType";
+import { Status } from "@/generated/prisma/enums";
 import { Badge } from "@radix-ui/themes";
 interface Props {
   status: Status;
