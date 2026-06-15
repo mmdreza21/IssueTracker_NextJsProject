@@ -16,6 +16,7 @@ import { createIssueSchema } from "@/lib/validationSchemas";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+import axios from "axios";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -36,7 +37,7 @@ function NewIssuePage() {
   const OnSubmit = handleSubmit(async (data) => {
     try {
       setLoading(true);
-      await apiClient.post("/issues", data);
+      await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error: any) {
       setError(error.response.data.message[0]);

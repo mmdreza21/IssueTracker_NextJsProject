@@ -1,0 +1,12 @@
+export enum Status {
+    OPEN = "OPEN",
+    IN_PROGRESS = "IN_PROGRESS",
+    CLOSED = "CLOSED"
+}
+export interface IssuesType {
+    id: number
+    title: string
+    description: string
+    status: Status
+    createdAt: string
+}
