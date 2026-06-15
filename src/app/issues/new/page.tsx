@@ -11,7 +11,6 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 
 import "easymde/dist/easymde.min.css";
 
-import apiClient from "@/lib/apiClient";
 import { createIssueSchema } from "@/lib/validationSchemas";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
@@ -45,7 +44,6 @@ function NewIssuePage() {
       setLoading(false);
     }
   });
-
   return (
     <div className="space-y-3 max-w-xl">
       {error && (
