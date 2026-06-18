@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-async function main() {
+export async function Seed() {
     await prisma.issue.createMany({
         data: [
             {
@@ -208,11 +208,5 @@ npm test
         ],
     });
 
-    console.log("20 issues created");
 }
 
-main()
-    .catch(console.error)
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
