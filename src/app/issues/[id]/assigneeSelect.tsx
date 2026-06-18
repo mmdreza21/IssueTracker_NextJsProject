@@ -1,17 +1,32 @@
 "use client";
-import { Flex, Select, Text } from "@radix-ui/themes";
-import { useQueryClient } from "@tanstack/react-query";
+import useUsers from "@/app/hooks/useUsers";
+import { Issue } from "@prisma/client";
+import { Flex, Select, Skeleton, Text } from "@radix-ui/themes";
 import axios from "axios";
-import { useState } from "react";
 
 interface AssigneeSelectProps {
-  issueId: number;
+  issue: Issue;
   currentAssigneeId?: string | null;
 }
 
-function AssigneeSelect({ issueId, currentAssigneeId }: AssigneeSelectProps) {
+function AssigneeSelect({ issue, currentAssigneeId }: AssigneeSelectProps) {
+  const { data: users, error, isLoading } = useUsers();
+
+  if (isLoading) return <Skeleton height={"2rem"} />;
+
+  if (error) return null;
+
   return (
-    <Select.Root>
+    <Select.Root
+      defaultValue={
+        issue.assignedToUserId ? issue.assignedToUserId : "unassigned"
+      }
+      onValueChange={(userId) => {
+        axios.patch("/api/issues/" + issue.id, {
+          assignedToUserId: userId == "unassigned" ? null : userId,
+        });
+      }}
+    >
       <Select.Trigger placeholder="Assign to..."></Select.Trigger>
 
       <Select.Content position="popper" sideOffset={5}>
@@ -28,7 +43,11 @@ function AssigneeSelect({ issueId, currentAssigneeId }: AssigneeSelectProps) {
 
         <Select.Group>
           <Select.Label>Team Members</Select.Label>
-          <Select.Item value="1">mamadreza</Select.Item>
+          {users?.map((user) => (
+            <Select.Item key={user.id} value={user.id}>
+              {user.email}
+            </Select.Item>
+          ))}
         </Select.Group>
       </Select.Content>
     </Select.Root>
