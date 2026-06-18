@@ -69,12 +69,13 @@ function IssueForm({ issue }: Props) {
           <TextField.Slot />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
         <Controller
           defaultValue={issue?.description}
           name="description"
           control={control}
           render={({ field }) => (
-            <SimpleMDE placeholder="Description" {...field} />
+            <SimpleMDE className="dark" placeholder="Description" {...field} />
           )}
         />
 
