@@ -4,7 +4,7 @@ interface Props {
   status: Status;
 }
 
-const statusMap: Record<Status, { label: string; color: string }> = {
+export const statusMap: Record<Status, { label: string; color: string }> = {
   OPEN: { label: "Open", color: "red" },
   CLOSED: { label: "Closed", color: "violet" },
   IN_PROGRESS: { label: "In progress", color: "green" },
