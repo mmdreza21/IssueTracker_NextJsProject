@@ -10,7 +10,7 @@ const useUsers = () =>
     useQuery<User[], Error>({
         queryKey: ["users"],
         queryFn: () => apiClient.getAll(),
-        staleTime: ms("1M"),
+        staleTime: ms("1H"),
         retry: 3
     });
 

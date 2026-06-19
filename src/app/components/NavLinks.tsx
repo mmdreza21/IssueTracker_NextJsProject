@@ -20,7 +20,7 @@ function NavLinks() {
         <li key={link.href}>
           <Link
             className={classNames({
-              "text-zinc-900!": currentPath === link.href,
+              "text-zinc-500!": currentPath === link.href,
               "nav-link": true,
             })}
             href={link.href}

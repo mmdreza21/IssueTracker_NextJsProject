@@ -2,7 +2,8 @@
 import useUsers from "@/app/hooks/useUsers";
 import { Issue } from "@prisma/client";
 import { Flex, Select, Skeleton, Text } from "@radix-ui/themes";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 interface AssigneeSelectProps {
   issue: Issue;
@@ -16,41 +17,53 @@ function AssigneeSelect({ issue, currentAssigneeId }: AssigneeSelectProps) {
 
   if (error) return null;
 
+  const assignIssue = (userId: string) => {
+    axios
+      .patch("/api/issues/" + issue.id, {
+        assignedToUserId: userId == "unassigned" ? null : userId,
+      })
+      .catch((e: AxiosError) => {
+        toast.error(e.message);
+      })
+      .then(() => {
+        toast.success(`issues assigned to: ${userId}`);
+      });
+  };
+
   return (
-    <Select.Root
-      defaultValue={
-        issue.assignedToUserId ? issue.assignedToUserId : "unassigned"
-      }
-      onValueChange={(userId) => {
-        axios.patch("/api/issues/" + issue.id, {
-          assignedToUserId: userId == "unassigned" ? null : userId,
-        });
-      }}
-    >
-      <Select.Trigger placeholder="Assign to..."></Select.Trigger>
+    <>
+      <Toaster />
+      <Select.Root
+        defaultValue={
+          issue.assignedToUserId ? issue.assignedToUserId : "unassigned"
+        }
+        onValueChange={assignIssue}
+      >
+        <Select.Trigger placeholder="Assign to..."></Select.Trigger>
 
-      <Select.Content position="popper" sideOffset={5}>
-        <Select.Group>
-          <Select.Label>Assign Issue</Select.Label>
-          <Select.Item value="unassigned">
-            <Flex align="center" gap="2">
-              <Text size="2">Unassigned</Text>
-            </Flex>
-          </Select.Item>
-        </Select.Group>
-
-        <Select.Separator />
-
-        <Select.Group>
-          <Select.Label>Team Members</Select.Label>
-          {users?.map((user) => (
-            <Select.Item key={user.id} value={user.id}>
-              {user.email}
+        <Select.Content position="popper" sideOffset={5}>
+          <Select.Group>
+            <Select.Label>Assign Issue</Select.Label>
+            <Select.Item value="unassigned">
+              <Flex align="center" gap="2">
+                <Text size="2">Unassigned</Text>
+              </Flex>
             </Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+          </Select.Group>
+
+          <Select.Separator />
+
+          <Select.Group>
+            <Select.Label>Team Members</Select.Label>
+            {users?.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.email}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+    </>
   );
 }
 
