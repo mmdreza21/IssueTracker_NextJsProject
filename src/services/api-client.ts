@@ -2,7 +2,7 @@ import axios, { type AxiosRequestConfig } from "axios";
 
 
 export const axiosInstance = axios.create({
-
+    baseURL: 'http://localhost:3000/'
 });
 
 class APIClient<T> {
@@ -12,8 +12,15 @@ class APIClient<T> {
     }
 
     getAll(params?: AxiosRequestConfig) {
-        return axiosInstance.get<T>(this.endpoint, params).then((res) => res.data);
+
+
+        return axiosInstance.get<T>(this.endpoint, params).then((res) => {
+            return res.data
+        });
+
     }
+
+
 }
 
 export default APIClient;
