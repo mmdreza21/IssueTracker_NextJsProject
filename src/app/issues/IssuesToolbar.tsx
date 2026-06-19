@@ -1,14 +1,16 @@
-import { Button } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
+import IssueStatusFilter from "./_components/IssueStatusFilter";
 
 function IssuesToolbar() {
   return (
-    <div>
+    <Flex gap={"4"} mb="5">
       <Button>
         <Link href="/issues/new">New Issue</Link>
       </Button>
-    </div>
+      <IssueStatusFilter />
+    </Flex>
   );
 }
 
