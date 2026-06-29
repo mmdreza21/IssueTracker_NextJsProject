@@ -14,7 +14,8 @@ if (!process.env.DATABASE_URL) {
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 
 // Create Prisma Client with adapter
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
+// log: ["query"]
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter, });
 
 if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = prisma;
