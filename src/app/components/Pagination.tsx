@@ -23,9 +23,9 @@ function Pagination({ itemCount, pageSize, currentPage }: Props) {
   const onPageChange = (page: number) => {
     const params = new URLSearchParams(currentQueries.toString());
 
-    for (const element of currentQueries.keys()) {
-      params.set(element, currentQueries.get(element)!);
-    }
+    // for (const element of currentQueries.keys()) {
+    //   params.set(element, currentQueries.get(element)!);
+    // }
 
     params.set("page", String(page));
 
@@ -33,7 +33,7 @@ function Pagination({ itemCount, pageSize, currentPage }: Props) {
   };
 
   return (
-    <Flex align="center" gap="3" mt="4" justify="center">
+    <Flex align="center" gap="3" justify="center">
       <Button
         variant="soft"
         disabled={currentPage === 1}
@@ -45,6 +45,7 @@ function Pagination({ itemCount, pageSize, currentPage }: Props) {
       <Flex gap="2" align="center">
         {pages.map((page) => (
           <Button
+            disabled={currentPage === page}
             key={page}
             variant={page === currentPage ? "solid" : "soft"}
             onClick={() => onPageChange(page)}
