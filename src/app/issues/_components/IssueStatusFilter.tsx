@@ -2,7 +2,7 @@
 
 import IssueStatusBadge, { statusMap } from "@/app/components/IssueStatusBadge";
 import { Status } from "@prisma/client";
-import { Select, Flex, Text, Badge } from "@radix-ui/themes";
+import { Select, Flex, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function IssueStatusFilter() {
@@ -26,13 +26,14 @@ function IssueStatusFilter() {
   const router = useRouter();
 
   const filterStatus = (status: string) => {
-    const params = new URLSearchParams();
-    for (const element of currentQueries.keys()) {
-      params.set(element, currentQueries.get(element)!);
-    }
+    const params = new URLSearchParams(currentQueries.toString());
+    // for (const element of currentQueries.keys()) {
+    //   params.set(element, currentQueries.get(element)!);
+    // }
     if (status !== "all") params.set("status", status);
     else params.delete("status");
 
+    params.set("page", "1");
     const query = params.size ? "?" + params.toString() : "";
     router.push(`/issues${query}`);
   };

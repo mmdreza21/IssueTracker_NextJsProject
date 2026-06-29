@@ -5,7 +5,7 @@ import IssueStatusFilter from "./_components/IssueStatusFilter";
 
 function IssuesToolbar() {
   return (
-    <Flex gap={"4"} mb="5">
+    <Flex gap={"4"}>
       <Button>
         <Link href="/issues/new">New Issue</Link>
       </Button>
