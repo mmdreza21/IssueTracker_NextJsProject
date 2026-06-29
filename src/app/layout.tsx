@@ -31,7 +31,7 @@ export default function RootLayout({
             <Theme accentColor="plum" panelBackground="solid" appearance="dark">
               <NavBar></NavBar>
               <main className="p-5">
-                <Container> {children}</Container>
+                <Container>{children}</Container>
               </main>
               {/* <ThemePanel></ThemePanel> */}
             </Theme>
